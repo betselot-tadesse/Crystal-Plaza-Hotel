@@ -1,6 +1,6 @@
 import React from 'react';
 import { HOTEL_CONFIG, getWhatsAppUrl, getAgodaUrl } from '../../data/hotelConfig';
-import { Phone, Mail, MapPin, MessageCircle, Instagram, Facebook, ShieldCheck, ArrowUp, ExternalLink, Utensils } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageCircle, Instagram, Facebook, Linkedin, ShieldCheck, ArrowUp, ExternalLink, Utensils } from 'lucide-react';
 import { analytics } from '../../utils/analytics';
 
 interface FooterProps {
@@ -45,24 +45,33 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => 
               Offering comfortable accommodation, convenient facilities, dining, and event spaces in the central heart of Sharjah, United Arab Emirates.
             </p>
 
-            <div className="pt-2 flex items-center gap-3">
+            <div className="pt-2 flex items-center gap-2.5">
+              <a
+                href={HOTEL_CONFIG.INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Crystal Hospitality Group on Instagram"
+                className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#C5A059] hover:border-[#C5A059] cursor-pointer transition-colors"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href={HOTEL_CONFIG.LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Crystal Plaza Hotel on LinkedIn"
+                className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#C5A059] hover:border-[#C5A059] cursor-pointer transition-colors"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
               <a
                 href={HOTEL_CONFIG.FACEBOOK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Crystal Plaza Hotel on Facebook"
-                className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] text-gray-300 hover:text-[#C5A059] hover:border-[#C5A059] cursor-pointer transition-colors"
+                className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-gray-300 hover:text-[#C5A059] hover:border-[#C5A059] cursor-pointer transition-colors"
               >
-                FB
-              </a>
-              <a
-                href={HOTEL_CONFIG.INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Crystal Plaza Hotel on Instagram"
-                className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] text-gray-300 hover:text-[#C5A059] hover:border-[#C5A059] cursor-pointer transition-colors"
-              >
-                IG
+                <Facebook className="w-4 h-4" />
               </a>
               <a
                 href={getWhatsAppUrl('general')}
@@ -70,9 +79,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => 
                 rel="noopener noreferrer"
                 onClick={() => analytics.trackWhatsAppClick('footer_social')}
                 aria-label="Contact via WhatsApp"
-                className="h-8 w-8 rounded-full border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-[10px] hover:border-emerald-400 cursor-pointer transition-colors"
+                className="h-8 w-8 rounded-full border border-emerald-500/40 text-emerald-400 flex items-center justify-center hover:border-emerald-400 cursor-pointer transition-colors"
               >
-                <MessageCircle className="w-3.5 h-3.5" />
+                <MessageCircle className="w-4 h-4" />
               </a>
             </div>
           </div>

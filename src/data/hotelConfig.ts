@@ -58,13 +58,13 @@ export const HOTEL_CONFIG = {
   AGODA_HOTEL_NAME: 'Crystal Plaza Hotel Sharjah',
 
   // Social Channels
-  INSTAGRAM_URL: 'https://instagram.com/crystalplazahotel',
+  INSTAGRAM_URL: 'https://www.instagram.com/crystalhospitalitygroup/',
   FACEBOOK_URL: 'https://facebook.com/crystalplazahotel',
-  LINKEDIN_URL: 'https://linkedin.com/company/crystalplazahotel',
+  LINKEDIN_URL: 'https://www.linkedin.com/company/crystal-plaza-hotel-shj',
   SOCIAL_LINKS: {
-    instagram: 'https://instagram.com/crystalplazahotel',
+    instagram: 'https://www.instagram.com/crystalhospitalitygroup/',
     facebook: 'https://facebook.com/crystalplazahotel',
-    linkedin: 'https://linkedin.com/company/crystalplazahotel'
+    linkedin: 'https://www.linkedin.com/company/crystal-plaza-hotel-shj'
   },
 
   // Standard Hotel Policies (Editable placeholders)
