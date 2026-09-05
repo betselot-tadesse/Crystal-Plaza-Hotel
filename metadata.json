@@ -1,0 +1,6 @@
+{
+  "name": "Crystal Plaza Hotel",
+  "description": "Official website for Crystal Plaza Hotel in Al Qasimia, Sharjah, UAE. Comfortable accommodation, dining, and event venues in the heart of Sharjah.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
