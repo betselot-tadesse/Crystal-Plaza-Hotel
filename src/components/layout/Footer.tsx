@@ -266,6 +266,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => 
             >
               Terms & Conditions
             </button>
+            <span className="text-gray-700">•</span>
+            <button
+              onClick={() => handleNav('admin')}
+              className="hover:text-[#C5A059] text-[#C5A059]/80 font-bold transition-colors cursor-pointer flex items-center gap-1"
+            >
+              <span>Staff Portal</span>
+            </button>
             <button
               onClick={scrollToTop}
               className="p-1.5 rounded-sm bg-[#0A192F] border border-[#C5A059]/30 hover:border-[#C5A059] text-gray-400 hover:text-white transition-colors cursor-pointer"

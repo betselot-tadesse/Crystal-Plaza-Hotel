@@ -17,10 +17,31 @@ import { AboutUsPage } from './pages/AboutUs';
 import { ContactPage } from './pages/Contact';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicy';
 import { TermsAndConditionsPage } from './pages/TermsAndConditions';
+import { AdminDashboard } from './pages/AdminDashboard';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<string>('home');
+  const [currentPage, setCurrentPage] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'admin') return 'admin';
+      const path = window.location.pathname.replace('/', '');
+      if (path === 'admin') return 'admin';
+    }
+    return 'home';
+  });
   const [pageParam, setPageParam] = useState<string>('');
+
+  // Synchronize hash for direct URL access to #admin
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'admin') {
+        setCurrentPage('admin');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   // Global Enquiry Modal State (for Events & Dining only)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -59,8 +80,29 @@ export default function App() {
     setIsModalOpen(true);
   };
 
+  // Announcement Banner
+  const [announcement] = useState(() => {
+    return localStorage.getItem('crystal_announcement') || '';
+  });
+  const [isAnnouncementActive] = useState(() => {
+    return localStorage.getItem('crystal_announcement_active') === 'true';
+  });
+
+  // If on Admin Dashboard, render full-screen dashboard without public layout
+  if (currentPage === 'admin') {
+    return <AdminDashboard onNavigate={handleNavigate} />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-neutral-50 text-slate-900 font-sans selection:bg-amber-500 selection:text-slate-950">
+      {/* Optional Top Announcement Bar */}
+      {isAnnouncementActive && announcement && (
+        <div className="bg-[#C5A059] text-slate-950 px-4 py-2 text-xs font-semibold text-center tracking-wide flex items-center justify-center gap-2">
+          <span>🔔</span>
+          <span>{announcement}</span>
+        </div>
+      )}
+
       {/* Global Header */}
       <Header
         activePage={currentPage}

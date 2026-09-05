@@ -9,6 +9,7 @@ import { BookingBar } from '../components/forms/BookingBar';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { RoomCard } from '../components/rooms/RoomCard';
 import { EventCard } from '../components/events/EventCard';
+import { BanquetInquiryForm } from '../components/events/BanquetInquiryForm';
 import { useAgodaPrices } from '../hooks/useAgodaPrices';
 import { 
   ArrowRight, 
@@ -200,7 +201,26 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </section>
 
-      {/* 5. WHY STAY WITH US / HOTEL FACILITIES */}
+      {/* 5. BANQUET HALL & EVENT INQUIRIES (IN FRONT, ON PAGE - NO POPUP) */}
+      <section className="py-20 bg-gradient-to-b from-stone-50 via-slate-50 to-stone-100 border-b border-[#C5A059]/20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-[#C5A059] uppercase tracking-[0.2em] font-semibold text-xs mb-2 block">
+              Banquet & Event Inquiries
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold font-serif-luxury text-[#0A192F]">
+              Plan Your Gathering at Crystal Banquet Hall
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
+              From wedding receptions and celebrations to corporate meetings, reserve our flexible hall accommodating up to 150 guests or 50 classroom setups. Submit your event inquiry directly below for tailored catering and packages.
+            </p>
+          </div>
+
+          <BanquetInquiryForm source="homepage_in_front" />
+        </div>
+      </section>
+
+      {/* 6. WHY STAY WITH US / HOTEL FACILITIES */}
       <section className="py-20 bg-[#0A192F] text-white border-y border-[#C5A059]/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <SectionHeading
@@ -316,7 +336,14 @@ export const HomePage: React.FC<HomePageProps> = ({
               <EventCard
                 key={venue.id}
                 venue={venue}
-                onEnquire={(name) => onOpenEventEnquiry(name)}
+                onEnquire={() => {
+                  const el = document.getElementById('banquet-inquiry-form');
+                  if (el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                  } else {
+                    onNavigate('events');
+                  }
+                }}
               />
             ))}
           </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { HOTEL_CONFIG } from '../../data/hotelConfig';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ShieldCheck } from 'lucide-react';
 
 interface HeaderProps {
   currentPage?: string;
@@ -84,7 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center space-x-8 text-xs font-semibold tracking-[0.1em] uppercase">
+        <nav className="hidden lg:flex items-center space-x-7 text-xs font-semibold tracking-[0.1em] uppercase">
           {navLinks.map((link) => {
             const isActive = current === link.id;
             return (
@@ -104,6 +104,20 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             );
           })}
+
+          {/* Admin Dashboard Access */}
+          <button
+            onClick={() => handleNavClick('admin')}
+            className={`px-2.5 py-1 rounded border text-[10px] font-bold tracking-wider uppercase transition-colors cursor-pointer flex items-center gap-1 ${
+              current === 'admin'
+                ? 'bg-[#C5A059] text-slate-950 border-[#C5A059]'
+                : 'border-[#C5A059]/40 text-[#C5A059] hover:bg-[#C5A059]/10'
+            }`}
+            title="Hotel Staff & Leads Admin Portal"
+          >
+            <ShieldCheck className="w-3 h-3" />
+            <span>Admin</span>
+          </button>
         </nav>
 
         {/* Mobile Menu Toggle Button */}
@@ -144,6 +158,16 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
               );
             })}
+
+            <div className="pt-2 mt-2 border-t border-slate-800">
+              <button
+                onClick={() => handleNavClick('admin')}
+                className="w-full text-left py-2.5 px-3 rounded-sm text-xs font-bold tracking-[0.1em] uppercase text-[#C5A059] hover:bg-[#071120] flex items-center gap-2 cursor-pointer"
+              >
+                <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
+                <span>Hotel Staff & Admin Portal</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

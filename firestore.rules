@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function incoming() {
+      return request.resource.data;
+    }
+    
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidInquiry(data) {
+      return data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 128
+        && data.phone is string && data.phone.size() > 0 && data.phone.size() <= 32
+        && (data.message == null || (data.message is string && data.message.size() <= 2000))
+        && data.targetDepartment in ['Reception', 'Room Service', 'Banquets & Dining']
+        && (data.status == null || data.status in ['new', 'in_progress', 'contacted', 'resolved']);
+    }
+
+    // Inquiries Collection: Public guest submissions allowed, reading & updating for dashboard
+    match /inquiries/{inquiryId} {
+      allow create: if isValidId(inquiryId) && isValidInquiry(incoming());
+      allow read: if true;
+      allow update: if isValidId(inquiryId) && isValidInquiry(incoming());
+      allow delete: if isValidId(inquiryId);
+    }
+
+    // Settings Collection
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Default deny for all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

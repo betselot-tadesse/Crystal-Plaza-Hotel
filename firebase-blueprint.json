@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "Guest leads and inquiries routed to Reception, Room Service, or Banquets",
+      "type": "object",
+      "properties": {
+        "fullName": {
+          "type": "string",
+          "description": "Full name of the inquiring guest",
+          "maxLength": 128
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact telephone and WhatsApp number",
+          "maxLength": 32
+        },
+        "message": {
+          "type": "string",
+          "description": "Inquiry requirements, questions or requests",
+          "maxLength": 2000
+        },
+        "targetDepartment": {
+          "type": "string",
+          "description": "Destination hotel department (Reception, Room Service, Banquets & Dining)",
+          "enum": ["Reception", "Room Service", "Banquets & Dining"]
+        },
+        "source": {
+          "type": "string",
+          "description": "Source page or component where inquiry was submitted",
+          "maxLength": 64
+        },
+        "status": {
+          "type": "string",
+          "description": "Current processing status of the lead",
+          "enum": ["new", "in_progress", "contacted", "resolved"]
+        },
+        "notes": {
+          "type": "string",
+          "description": "Internal staff notes or follow-up logs",
+          "maxLength": 1000
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the inquiry was submitted"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the inquiry was last updated"
+        }
+      },
+      "required": ["fullName", "phone", "targetDepartment", "status", "createdAt"]
+    },
+    "WebsiteConfig": {
+      "title": "WebsiteConfig",
+      "description": "Global website configuration and hotel department contact settings",
+      "type": "object",
+      "properties": {
+        "receptionPhone": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "eventsPhone": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "announcement": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "Collection of all guest leads and department inquiries"
+    },
+    "/settings/website": {
+      "schema": "WebsiteConfig",
+      "description": "General hotel website settings and announcements"
+    }
+  }
+}

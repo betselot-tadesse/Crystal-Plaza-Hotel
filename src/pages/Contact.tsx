@@ -16,6 +16,7 @@ import {
   Linkedin
 } from 'lucide-react';
 import { analytics } from '../utils/analytics';
+import { createInquiry, TargetDepartment } from '../services/inquiryService';
 
 interface ContactPageProps {
   onNavigate: (page: string, detail?: string) => void;
@@ -24,7 +25,6 @@ interface ContactPageProps {
 export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('Room Enquiry');
   const [message, setMessage] = useState('');
   
@@ -36,8 +36,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
     e.preventDefault();
     setFormError('');
 
-    if (!fullName.trim() || !phone.trim() || !email.trim() || !message.trim()) {
-      setFormError('Please fill in all required fields.');
+    if (!fullName.trim() || !phone.trim() || !message.trim()) {
+      setFormError('Please fill in your name, contact phone, and message.');
       return;
     }
 
@@ -46,14 +46,43 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
       analytics.trackEnquirySubmit('CONTACT_FORM', {
         name: fullName,
         subject,
-        phone,
-        email
+        phone
       });
 
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      // Determine target department & WhatsApp recipient
+      let targetDepartment: TargetDepartment = 'Reception';
+      let targetWa: string = HOTEL_CONFIG.WHATSAPP_NUMBER;
+
+      if (subject.includes('Restaurant') || subject.includes('Dining')) {
+        targetDepartment = 'Room Service';
+        targetWa = HOTEL_CONFIG.ROOM_SERVICE_WHATSAPP;
+      } else if (subject.includes('Banquet') || subject.includes('Event')) {
+        targetDepartment = 'Banquets & Dining';
+        targetWa = HOTEL_CONFIG.EVENTS_DINING_WHATSAPP;
+      }
+
+      const waText = `Hello Crystal Plaza Hotel, I have submitted an inquiry:\n• Name: ${fullName.trim()}\n• Phone: ${phone.trim()}\n• Subject: ${subject}\n• Message: ${message.trim()}`;
+      const waUrl = `https://api.whatsapp.com/send?phone=${targetWa}&text=${encodeURIComponent(waText)}`;
+
+      // Directly launch WhatsApp
+      try {
+        window.open(waUrl, '_blank', 'noopener,noreferrer');
+      } catch (err) {
+        console.warn('WhatsApp window launch warning:', err);
+      }
+
+      await createInquiry({
+        fullName,
+        phone,
+        message: `[Subject: ${subject}] ${message}`,
+        targetDepartment,
+        source: 'contact_page'
+      });
+
       setIsSubmitted(true);
     } catch (err) {
-      setFormError('Unable to send message at this time. Please contact our front desk by phone or WhatsApp.');
+      // Even if background save experiences an issue, WhatsApp was launched
+      setIsSubmitted(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -264,21 +293,30 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
             <div className="p-6 sm:p-8">
               {isSubmitted ? (
                 <div className="py-12 text-center space-y-4 animate-in zoom-in-95 duration-200">
-                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
                     <CheckCircle className="w-9 h-9" />
                   </div>
                   <h3 className="text-xl font-bold font-serif-luxury text-slate-900">
-                    Thank you. Your message has been received.
+                    Thank You! Your Inquiry Has Been Received.
                   </h3>
-                  <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-                    Our team will review your message and reply via phone or email shortly.
+                  <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+                    Your inquiry has been sent directly to our team via WhatsApp. Our front desk staff will assist you right away.
                   </p>
-                  <div className="pt-4">
+                  <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <a
+                      href={`https://api.whatsapp.com/send?phone=${HOTEL_CONFIG.WHATSAPP_NUMBER}&text=${encodeURIComponent(`Hello Crystal Plaza Hotel, I have sent an inquiry:\n• Name: ${fullName.trim()}\n• Phone: ${phone.trim()}\n• Subject: ${subject}\n• Message: ${message.trim()}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow transition-colors"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Open WhatsApp Again</span>
+                    </a>
                     <button
                       onClick={() => setIsSubmitted(false)}
-                      className="px-6 py-2.5 bg-slate-900 text-amber-400 font-bold text-xs uppercase tracking-wider rounded-lg"
+                      className="px-6 py-2.5 bg-slate-900 text-amber-400 font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-slate-800 transition-colors"
                     >
-                      Send Another Message
+                      Send Another Inquiry
                     </button>
                   </div>
                 </div>
@@ -308,7 +346,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Contact Phone *
+                        Contact Phone (with WhatsApp) *
                       </label>
                       <input
                         type="tel"
@@ -321,37 +359,34 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="yourname@domain.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Enquiry Subject
-                      </label>
-                      <select
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      >
-                        <option value="Room Reservation Enquiry">Room Reservation Enquiry</option>
-                        <option value="Banquet / Event Hall Enquiry">Banquet / Event Hall Enquiry</option>
-                        <option value="Restaurant / Dining Enquiry">Restaurant / Dining Enquiry</option>
-                        <option value="Corporate / Long-Term Stay">Corporate / Long-Term Stay</option>
-                        <option value="General Hotel Information">General Hotel Information</option>
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Enquiry Subject
+                    </label>
+                    <select
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                      className="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    >
+                      <option value="Room Reservation Enquiry">Room Reservation Enquiry (Reception Desk)</option>
+                      <option value="Banquet / Event Hall Enquiry">Banquet / Event Hall Enquiry (Events Team)</option>
+                      <option value="Restaurant / Dining Enquiry">Restaurant / Dining Enquiry (Room Service & Dining)</option>
+                      <option value="Corporate / Long-Term Stay">Corporate / Long-Term Stay (Front Office)</option>
+                      <option value="General Hotel Information">General Hotel Information (Reception)</option>
+                    </select>
+                    <p className="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      <span>
+                        Routed directly to:{' '}
+                        <strong className="text-slate-800">
+                          {subject.includes('Restaurant') || subject.includes('Dining')
+                            ? 'Room Service / Dining'
+                            : subject.includes('Banquet') || subject.includes('Event')
+                            ? 'Banquets & Event Hall'
+                            : 'Reception / Front Desk'}
+                        </strong>
+                      </span>
+                    </p>
                   </div>
 
                   <div>
@@ -377,12 +412,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       {isSubmitting ? (
                         <>
                           <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
-                          <span>Sending Message...</span>
+                          <span>Sending Inquiry...</span>
                         </>
                       ) : (
                         <>
                           <Send className="w-4 h-4" />
-                          <span>SEND MESSAGE</span>
+                          <span>SEND INQUIRY</span>
                         </>
                       )}
                     </button>

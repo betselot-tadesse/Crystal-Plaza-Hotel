@@ -4,6 +4,7 @@ import { EnquiryType } from '../../types/database';
 import { HOTEL_CONFIG, getWhatsAppUrl, getAgodaUrl } from '../../data/hotelConfig';
 import { analytics } from '../../utils/analytics';
 import { roomsData } from '../../data/roomsData';
+import { createInquiry, TargetDepartment } from '../../services/inquiryService';
 
 interface EnquiryModalProps {
   isOpen: boolean;
@@ -23,7 +24,6 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
   const [enquiryType, setEnquiryType] = useState<EnquiryType>(defaultType);
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
   
   // Room specific
   const [selectedRoomSlug, setSelectedRoomSlug] = useState(defaultRoomSlug || roomsData[0]?.slug || '');
@@ -76,10 +76,6 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
       setErrorMessage('Please provide a valid contact telephone number.');
       return;
     }
-    if (!email.trim() || !email.includes('@')) {
-      setErrorMessage('Please enter a valid email address.');
-      return;
-    }
 
     if (enquiryType === 'ROOM_BOOKING' && (!checkIn || !checkOut)) {
       setErrorMessage('Please specify your expected check-in and check-out dates.');
@@ -98,19 +94,52 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
         guests: guestsCount || eventGuests || diningGuests
       });
 
-      // Simulate network request for robust client-side enquiry handling
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      // Map enquiryType to TargetDepartment
+      let targetDepartment: TargetDepartment = 'Reception';
+      if (enquiryType === 'DINING') {
+        targetDepartment = 'Room Service';
+      } else if (enquiryType === 'EVENT') {
+        targetDepartment = 'Banquets & Dining';
+      }
+
+      // Build context detail into the message
+      let fullMessage = message.trim();
+      if (enquiryType === 'ROOM_BOOKING') {
+        const room = roomsData.find(r => r.slug === selectedRoomSlug);
+        fullMessage = `[Room Booking Inquiry] Room: ${room ? room.name : selectedRoomSlug} | Dates: ${checkIn || 'Not specified'} to ${checkOut || 'Not specified'} | Rooms: ${roomsCount} | Guests: ${guestsCount}. ${fullMessage}`.trim();
+      } else if (enquiryType === 'DINING') {
+        fullMessage = `[Dining / Room Service Inquiry] Party Size: ${diningGuests} | Date: ${diningDate || 'Today'} ${diningTime || ''}. ${fullMessage}`.trim();
+      } else if (enquiryType === 'EVENT') {
+        fullMessage = `[Banquet Inquiry] Type: ${eventType}. ${fullMessage}`.trim();
+      }
+
+      // Directly send the message to WhatsApp
+      const waUrl = getWhatsAppHandoffUrl();
+      try {
+        window.open(waUrl, '_blank', 'noopener,noreferrer');
+      } catch (e) {
+        console.warn('Could not open WhatsApp window directly', e);
+      }
+
+      await createInquiry({
+        fullName,
+        phone,
+        message: fullMessage,
+        targetDepartment,
+        source: `modal_${enquiryType.toLowerCase()}`
+      });
 
       setIsSuccess(true);
     } catch (err) {
-      setErrorMessage('An unexpected error occurred while sending your enquiry. Please contact our reception directly or reach out on WhatsApp.');
+      // Even if database save has issues, WhatsApp was launched
+      setIsSuccess(true);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const getWhatsAppHandoffUrl = () => {
-    let summaryText = `Hello Crystal Plaza Hotel, I have submitted an enquiry:\n• Name: ${fullName}\n• Phone: ${phone}\n• Type: ${enquiryType}`;
+    let summaryText = `Hello Crystal Plaza Hotel, I have submitted an inquiry:\n• Name: ${fullName.trim()}\n• Phone: ${phone.trim()}\n• Department: ${enquiryType.replace('_', ' ')}`;
     if (enquiryType === 'ROOM_BOOKING') {
       const room = roomsData.find(r => r.slug === selectedRoomSlug);
       summaryText += `\n• Room: ${room ? room.name : selectedRoomSlug}\n• Dates: ${checkIn} to ${checkOut}\n• Guests: ${guestsCount}, Rooms: ${roomsCount}`;
@@ -119,15 +148,15 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
     } else if (enquiryType === 'DINING') {
       summaryText += `\n• Dining Date: ${diningDate} at ${diningTime}\n• Guests: ${diningGuests}`;
     }
-    if (message) {
-      summaryText += `\n• Notes: ${message}`;
+    if (message.trim()) {
+      summaryText += `\n• Requirements: ${message.trim()}`;
     }
 
     const targetNumber = (enquiryType === 'EVENT' || enquiryType === 'DINING')
       ? HOTEL_CONFIG.EVENTS_DINING_WHATSAPP
       : HOTEL_CONFIG.WHATSAPP_NUMBER;
 
-    return `https://wa.me/${targetNumber}?text=${encodeURIComponent(summaryText)}`;
+    return `https://api.whatsapp.com/send?phone=${targetNumber}&text=${encodeURIComponent(summaryText)}`;
   };
 
   const resetForm = () => {
@@ -217,19 +246,19 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                 <CheckCircle className="w-8 h-8" />
               </div>
               <h4 className="text-xl font-bold font-serif-luxury text-slate-900">
-                Enquiry Received
+                Thank You! Your Inquiry Has Been Received.
               </h4>
               <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-                Thank you. Your enquiry has been received. Our team will contact you shortly with personalized details and current rates.
+                Your inquiry has been sent directly to our team via WhatsApp. Our front desk staff will assist you with rates and availability immediately.
               </p>
 
               <div className="pt-2 p-4 bg-slate-50 border border-slate-200 rounded-lg text-left text-xs space-y-1 max-w-md mx-auto">
-                <p className="font-semibold text-slate-800">Enquiry Summary:</p>
+                <p className="font-semibold text-slate-800">Inquiry Summary:</p>
                 <p className="text-slate-600">Guest: {fullName}</p>
                 <p className="text-slate-600">Phone: {phone}</p>
-                <p className="text-slate-600">Type: {enquiryType.replace('_', ' ')}</p>
-                <p className="text-amber-800 italic mt-1">
-                  * Note: This is an official reservation enquiry. Final confirmation will be coordinated by our reservations team.
+                <p className="text-slate-600">Department: {enquiryType.replace('_', ' ')}</p>
+                <p className="text-emerald-700 font-medium mt-1">
+                  ✓ WhatsApp message opened to send directly to Crystal Plaza Hotel.
                 </p>
               </div>
 
@@ -241,7 +270,7 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider rounded transition-colors shadow"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>Send via WhatsApp for Fast Reply</span>
+                  <span>Open WhatsApp Again</span>
                 </a>
                 <button
                   type="button"
@@ -391,68 +420,16 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
               )}
 
               {enquiryType === 'EVENT' && (
-                <div className="p-4 bg-amber-50/60 border border-amber-200/60 rounded-lg space-y-3">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Event Type *
-                      </label>
-                      <select
-                        value={eventType}
-                        onChange={(e) => setEventType(e.target.value)}
-                        className="w-full text-xs p-2.5 rounded border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      >
-                        <option value="Wedding / Reception">Wedding / Reception</option>
-                        <option value="Corporate Meeting">Corporate Meeting</option>
-                        <option value="Conference / Seminar">Conference / Seminar</option>
-                        <option value="Birthday Celebration">Birthday Celebration</option>
-                        <option value="Private Dinner">Private Dinner</option>
-                        <option value="Community / Social Event">Community / Social Event</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Anticipated Event Date *
-                      </label>
-                      <input
-                        type="date"
-                        value={eventDate}
-                        onChange={(e) => setEventDate(e.target.value)}
-                        required
-                        className="w-full text-xs p-2.5 rounded border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      />
-                    </div>
+                <div className="p-4 bg-amber-50/60 border border-amber-200/60 rounded-lg space-y-2">
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <span className="font-semibold text-slate-900">Banquet Hall & Event Inquiry</span>
+                    <span className="text-[11px] font-medium text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full">
+                      Capacity: Up to 150 Guests • 50 Classrooms
+                    </span>
                   </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Estimated Number of Guests *
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="e.g. 50"
-                        value={eventGuests}
-                        onChange={(e) => setEventGuests(e.target.value)}
-                        min="10"
-                        className="w-full text-xs p-2.5 rounded border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Approximate Budget (Optional)
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="e.g. In AED"
-                        value={budget}
-                        onChange={(e) => setBudget(e.target.value)}
-                        className="w-full text-xs p-2.5 rounded border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      />
-                    </div>
-                  </div>
+                  <p className="text-xs text-slate-600">
+                    Direct Inquiry & WhatsApp: <strong className="text-slate-900">056 973 2183</strong>. Please enter your name, phone number, and message below.
+                  </p>
                 </div>
               )}
 
@@ -559,23 +536,6 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Email Address *
-                </label>
-                <div className="relative">
-                  <input
-                    type="email"
-                    placeholder="your.email@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full text-xs p-2.5 pl-8 rounded border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                  />
-                  <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-3" />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
                   Message / Special Requests (Optional)
                 </label>
                 <textarea
@@ -588,7 +548,7 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
               </div>
 
               <div className="p-3 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-500 leading-relaxed">
-                By submitting this form, you send an official enquiry directly to Crystal Plaza Hotel front desk. We will get in touch via telephone or email with rates and availability.
+                By submitting this form, you send an official enquiry directly to Crystal Plaza Hotel front desk. We will get in touch via telephone or WhatsApp with rates and availability.
               </div>
 
               <div className="pt-2 flex items-center justify-end gap-3">
