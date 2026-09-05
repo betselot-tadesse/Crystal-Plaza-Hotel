@@ -123,7 +123,11 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
       summaryText += `\n• Notes: ${message}`;
     }
 
-    return `https://wa.me/${HOTEL_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(summaryText)}`;
+    const targetNumber = (enquiryType === 'EVENT' || enquiryType === 'DINING')
+      ? HOTEL_CONFIG.EVENTS_DINING_WHATSAPP
+      : HOTEL_CONFIG.WHATSAPP_NUMBER;
+
+    return `https://wa.me/${targetNumber}?text=${encodeURIComponent(summaryText)}`;
   };
 
   const resetForm = () => {

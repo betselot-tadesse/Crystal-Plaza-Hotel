@@ -125,41 +125,65 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              {/* Telephone */}
+              {/* Rooms & Hotel Inquiry */}
               <div className="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center flex-shrink-0">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">Direct Telephone</h4>
-                  <p className="text-xs text-slate-500 mt-0.5">24-Hour Front Desk</p>
-                  <a
-                    href={HOTEL_CONFIG.PHONE_TEL}
-                    onClick={() => analytics.trackPhoneClick('contact_page')}
-                    className="inline-block text-sm font-bold text-slate-900 hover:text-amber-700 mt-1"
-                  >
-                    {HOTEL_CONFIG.PHONE_NUMBER}
-                  </a>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">Rooms & Hotel Inquiry</h4>
+                  <p className="text-xs text-slate-500 mt-0.5">Room reservations, rates, & hotel information</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-3">
+                    <a
+                      href={HOTEL_CONFIG.PHONE_TEL}
+                      onClick={() => analytics.trackPhoneClick('contact_page_rooms')}
+                      className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-900 hover:text-amber-700"
+                    >
+                      <Phone className="w-3.5 h-3.5 text-amber-700" />
+                      <span>{HOTEL_CONFIG.PHONE_NUMBER}</span>
+                    </a>
+                    <a
+                      href={getWhatsAppUrl('room')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => analytics.trackWhatsAppClick('contact_page_rooms')}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>WhatsApp {HOTEL_CONFIG.WHATSAPP_DISPLAY}</span>
+                    </a>
+                  </div>
                 </div>
               </div>
 
-              {/* WhatsApp */}
+              {/* Banquet Hall & Dining Inquiry */}
               <div className="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center flex-shrink-0">
-                  <MessageCircle className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">WhatsApp Instant Chat</h4>
-                  <p className="text-xs text-slate-500 mt-0.5">Direct Messaging Assistance</p>
-                  <a
-                    href={getWhatsAppUrl('general')}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => analytics.trackWhatsAppClick('contact_page')}
-                    className="inline-block text-xs font-bold text-emerald-700 hover:text-emerald-800 mt-1"
-                  >
-                    Chat on WhatsApp ({HOTEL_CONFIG.WHATSAPP_DISPLAY}) →
-                  </a>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">Banquet Hall & Dining Inquiry</h4>
+                  <p className="text-xs text-slate-500 mt-0.5">Events, weddings, corporate catering, & restaurant orders</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-3">
+                    <a
+                      href={HOTEL_CONFIG.EVENTS_DINING_TEL}
+                      onClick={() => analytics.trackPhoneClick('contact_page_dining')}
+                      className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-900 hover:text-amber-700"
+                    >
+                      <Phone className="w-3.5 h-3.5 text-amber-700" />
+                      <span>{HOTEL_CONFIG.EVENTS_DINING_DISPLAY}</span>
+                    </a>
+                    <a
+                      href={getWhatsAppUrl('event')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => analytics.trackWhatsAppClick('contact_page_dining')}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>WhatsApp {HOTEL_CONFIG.EVENTS_DINING_DISPLAY}</span>
+                    </a>
+                  </div>
                 </div>
               </div>
 

@@ -80,10 +80,8 @@ export const venueHalls: EventVenue[] = [
       'https://i.ibb.co/ZRyNTJj4/Whats-App-Image-2026-08-08-at-4-47-57-PM.jpg'
     ],
     capacity: {
-      theater: 150,
-      banquet: 100,
-      classroom: 80,
-      reception: 180
+      people: 'Up to 150 People Capacity',
+      classroom: 50
     },
     facilities: [
       'High-Definition Projector & Motorized Screen',

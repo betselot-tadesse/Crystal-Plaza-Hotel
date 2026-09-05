@@ -89,10 +89,20 @@ export const EventCard: React.FC<EventCardProps> = ({ venue, onEnquire }) => {
           <div className="bg-slate-50 border border-slate-100 p-3 rounded-lg mb-4">
             <h4 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
               <Users className="w-3.5 h-3.5 text-amber-600" />
-              <span>Seating Capacities</span>
+              <span>Venue Capacity</span>
             </h4>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              {venue.capacity.theater && (
+              {venue.capacity.people && (
+                <div className="text-slate-700 font-medium">
+                  {venue.capacity.people}
+                </div>
+              )}
+              {venue.capacity.classroom && (
+                <div className="text-slate-600">
+                  <span className="font-semibold text-slate-900">{venue.capacity.classroom}</span> Classrooms
+                </div>
+              )}
+              {venue.capacity.theater && !venue.capacity.people && (
                 <div className="text-slate-600">
                   <span className="font-semibold text-slate-900">{venue.capacity.theater}</span> Theater
                 </div>
@@ -100,11 +110,6 @@ export const EventCard: React.FC<EventCardProps> = ({ venue, onEnquire }) => {
               {venue.capacity.banquet && (
                 <div className="text-slate-600">
                   <span className="font-semibold text-slate-900">{venue.capacity.banquet}</span> Banquet
-                </div>
-              )}
-              {venue.capacity.classroom && (
-                <div className="text-slate-600">
-                  <span className="font-semibold text-slate-900">{venue.capacity.classroom}</span> Classroom
                 </div>
               )}
               {venue.capacity.reception && (

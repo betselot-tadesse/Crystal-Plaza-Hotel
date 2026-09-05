@@ -228,6 +228,29 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigate, onOpenEventE
             <p className="text-xs sm:text-sm text-slate-300 mt-1">
               Tell us about your planned gathering in Sharjah. Our event coordinator will prepare a tailored proposal with venue options and menu packages.
             </p>
+
+            <div className="mt-4 pt-4 border-t border-slate-800 flex flex-wrap items-center gap-3 text-xs">
+              <span className="text-amber-400 font-semibold uppercase tracking-wider text-[11px]">
+                Direct Inquiry:
+              </span>
+              <a
+                href={HOTEL_CONFIG.EVENTS_DINING_TEL}
+                className="inline-flex items-center gap-1.5 text-white hover:text-amber-400 font-semibold transition-colors"
+              >
+                <Phone className="w-3.5 h-3.5 text-amber-400" />
+                <span>Call {HOTEL_CONFIG.EVENTS_DINING_DISPLAY}</span>
+              </a>
+              <span className="text-slate-600">|</span>
+              <a
+                href={getWhatsAppUrl('event')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-semibold transition-colors"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                <span>WhatsApp {HOTEL_CONFIG.EVENTS_DINING_DISPLAY}</span>
+              </a>
+            </div>
           </div>
 
           <div className="p-6 sm:p-8">

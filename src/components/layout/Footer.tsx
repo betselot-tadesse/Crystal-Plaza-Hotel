@@ -24,15 +24,21 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 pb-14 border-b border-white/10">
           {/* Column 1: Brand & Overview */}
           <div className="space-y-4">
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold tracking-tight text-white uppercase">
+            <div className="flex items-center gap-3.5">
+              <img
+                src={HOTEL_CONFIG.LOGO_URL}
+                alt="Crystal Plaza Hotel Logo"
+                className="w-12 h-12 rounded-full object-cover border-2 border-[#C5A059] shadow-md flex-shrink-0"
+                referrerPolicy="no-referrer"
+              />
+              <div className="flex flex-col">
+                <span className="text-xl font-bold tracking-tight text-white uppercase">
                   <span className="text-[#C5A059]">Crystal</span> Plaza Hotel
                 </span>
+                <span className="text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium mt-0.5">
+                  Al Qasimia • Sharjah • UAE
+                </span>
               </div>
-              <span className="text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-medium mt-1">
-                Al Qasimia • Sharjah • UAE
-              </span>
             </div>
 
             <p className="text-xs text-gray-400 leading-relaxed max-w-sm">
@@ -142,39 +148,50 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => 
                   {HOTEL_CONFIG.FULL_ADDRESS}
                 </span>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-[#C5A059] flex-shrink-0" />
-                <a
-                  href={HOTEL_CONFIG.PHONE_TEL}
-                  onClick={() => analytics.trackPhoneClick('footer_phone')}
-                  className="hover:text-[#C5A059] transition-colors"
-                >
-                  {HOTEL_CONFIG.PHONE_NUMBER}
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Utensils className="w-4 h-4 text-[#C5A059] flex-shrink-0" />
+              <li className="flex items-start gap-3">
+                <Phone className="w-4 h-4 text-[#C5A059] mt-0.5 flex-shrink-0" />
                 <div>
-                  <span className="text-gray-400 block text-[10px] uppercase font-semibold">Room Service & Dining:</span>
+                  <span className="text-gray-400 block text-[10px] uppercase font-semibold">Rooms & Hotel Inquiry:</span>
                   <a
-                    href={HOTEL_CONFIG.ROOM_SERVICE_TEL}
-                    className="hover:text-[#C5A059] font-medium text-white transition-colors"
+                    href={HOTEL_CONFIG.PHONE_TEL}
+                    onClick={() => analytics.trackPhoneClick('footer_phone')}
+                    className="hover:text-[#C5A059] font-medium text-white transition-colors block"
                   >
-                    {HOTEL_CONFIG.ROOM_SERVICE_DISPLAY}
+                    {HOTEL_CONFIG.PHONE_NUMBER}
+                  </a>
+                  <a
+                    href={getWhatsAppUrl('general')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => analytics.trackWhatsAppClick('footer_rooms_whatsapp')}
+                    className="hover:text-emerald-400 text-[11px] text-emerald-400 transition-colors flex items-center gap-1 mt-0.5"
+                  >
+                    <MessageCircle className="w-3 h-3 text-emerald-400" />
+                    <span>WhatsApp: {HOTEL_CONFIG.WHATSAPP_DISPLAY}</span>
                   </a>
                 </div>
               </li>
-              <li className="flex items-center gap-3">
-                <MessageCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <a
-                  href={getWhatsAppUrl('general')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => analytics.trackWhatsAppClick('footer_link')}
-                  className="hover:text-emerald-400 transition-colors"
-                >
-                  {HOTEL_CONFIG.WHATSAPP_DISPLAY}
-                </a>
+              <li className="flex items-start gap-3">
+                <Utensils className="w-4 h-4 text-[#C5A059] mt-0.5 flex-shrink-0" />
+                <div>
+                  <span className="text-gray-400 block text-[10px] uppercase font-semibold">Banquet Hall & Dining Inquiry:</span>
+                  <a
+                    href={HOTEL_CONFIG.EVENTS_DINING_TEL}
+                    className="hover:text-[#C5A059] font-medium text-white transition-colors block"
+                  >
+                    {HOTEL_CONFIG.EVENTS_DINING_DISPLAY}
+                  </a>
+                  <a
+                    href={getWhatsAppUrl('event')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => analytics.trackWhatsAppClick('footer_dining_whatsapp')}
+                    className="hover:text-emerald-400 text-[11px] text-emerald-400 transition-colors flex items-center gap-1 mt-0.5"
+                  >
+                    <MessageCircle className="w-3 h-3 text-emerald-400" />
+                    <span>WhatsApp: {HOTEL_CONFIG.EVENTS_DINING_DISPLAY}</span>
+                  </a>
+                </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[#C5A059] flex-shrink-0" />

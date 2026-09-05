@@ -63,53 +63,14 @@ export const HomePage: React.FC<HomePageProps> = ({
   return (
     <div className="flex flex-col min-h-screen bg-[#0A192F]">
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[92vh] flex items-center justify-center bg-[#0A192F] text-white pt-24 pb-20 px-4 sm:px-6">
+      <section className="relative h-[65vh] sm:h-[75vh] md:h-[82vh] flex items-end justify-center bg-[#0A192F] px-4 sm:px-6">
         {/* Hero Background Image */}
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: 'linear-gradient(rgba(10, 25, 47, 0.65), rgba(10, 25, 47, 0.75)), url("https://i.ibb.co/ksP8W5H1/Whats-App-Image-2026-09-04-at-4-18-08-PM-1.jpg")'
+            backgroundImage: 'url("https://i.ibb.co/ksP8W5H1/Whats-App-Image-2026-09-04-at-4-18-08-PM-1.jpg")'
           }}
         ></div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6 pt-8 pb-14">
-          {/* Welcome Subtitle */}
-          <h2 className="text-[#C5A059] font-medium tracking-[0.4em] uppercase text-xs sm:text-sm mb-4">
-            Welcome to Al Qasimia, Sharjah
-          </h2>
-
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif leading-[1.1] mb-6 text-white font-normal">
-            Stay Comfortably in the <br className="hidden sm:inline" />
-            <span className="italic text-[#C5A059]">Heart of Sharjah</span>
-          </h1>
-
-          <p className="text-base sm:text-lg text-gray-200 leading-relaxed max-w-xl mx-auto mb-8 font-light">
-            Discover comfortable accommodation, convenient facilities, and authentic dining experiences tailored for the discerning business and leisure traveller.
-          </p>
-
-          {/* Hero CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <button
-              onClick={() => {
-                analytics.trackBookNowClick('hero_primary');
-                window.open(getAgodaUrl(), '_blank', 'noopener,noreferrer');
-              }}
-              className="w-full sm:w-auto bg-[#C5A059] text-[#0A192F] px-8 py-3.5 text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-[#B38E47] transition-all shadow-xl active:scale-95 cursor-pointer flex items-center justify-center gap-2"
-            >
-              <ExternalLink className="w-4 h-4 text-[#0A192F]" />
-              <span>Check Agoda Rates</span>
-            </button>
-
-            <button
-              onClick={() => onNavigate('rooms')}
-              className="w-full sm:w-auto border border-white/30 bg-white/5 hover:bg-white/10 px-8 py-3.5 text-xs font-semibold uppercase tracking-widest backdrop-blur-sm transition-all text-white rounded-sm flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <span>Explore Rooms</span>
-              <ArrowRight className="w-4 h-4 text-[#C5A059]" />
-            </button>
-          </div>
-        </div>
 
         {/* 2. BOOKING / ENQUIRY BAR (Integrated into lower Hero) */}
         <div className="absolute bottom-0 left-0 right-0 transform translate-y-1/2 z-20 px-4 sm:px-6">
@@ -180,38 +141,25 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
             </div>
 
-            {/* Intro Visual Mosaic */}
-            <div className="lg:col-span-6 grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <div className="rounded-sm overflow-hidden shadow-lg aspect-[4/5] bg-[#0A192F] border border-[#C5A059]/20">
-                  <img
-                    src="https://i.ibb.co/b542Q4xz/Chat-GPT-Image-Sep-5-2026-10-38-32-AM.png"
-                    alt="Crystal Plaza Hotel King Bed guest room"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <div className="p-4 bg-white rounded-sm border border-gray-200 shadow-sm text-center">
-                  <p className="font-serif text-2xl font-bold text-[#0A192F]">24/7</p>
-                  <p className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Front Desk & Service</p>
-                </div>
+            {/* Intro Visual Showcase */}
+            <div className="lg:col-span-6 grid grid-cols-2 gap-5 items-stretch">
+              <div className="rounded-lg overflow-hidden shadow-lg aspect-[4/5] bg-[#0A192F] border border-[#C5A059]/25">
+                <img
+                  src="https://i.ibb.co/b542Q4xz/Chat-GPT-Image-Sep-5-2026-10-38-32-AM.png"
+                  alt="Crystal Plaza Hotel King Bed guest room"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
               </div>
-
-              <div className="space-y-4 pt-6">
-                <div className="p-4 bg-[#0A192F] text-white rounded-sm shadow-sm text-center border border-[#C5A059]/30">
-                  <p className="font-serif text-2xl font-bold text-[#C5A059]">Al Qasimia</p>
-                  <p className="text-[10px] text-gray-300 uppercase tracking-widest font-semibold">Prime Sharjah Location</p>
-                </div>
-                <div className="rounded-sm overflow-hidden shadow-lg aspect-[4/5] bg-[#0A192F] border border-[#C5A059]/20">
-                  <img
-                    src="https://i.ibb.co/fz8CHH3x/Whats-App-Image-2026-09-04-at-5-06-41-PM.jpg"
-                    alt="Crystal Plaza Hotel dining atmosphere"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
+              <div className="rounded-lg overflow-hidden shadow-lg aspect-[4/5] bg-[#0A192F] border border-[#C5A059]/25">
+                <img
+                  src="https://i.ibb.co/fz8CHH3x/Whats-App-Image-2026-09-04-at-5-06-41-PM.jpg"
+                  alt="Crystal Plaza Hotel dining atmosphere"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
               </div>
             </div>
           </div>

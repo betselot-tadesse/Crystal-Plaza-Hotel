@@ -50,9 +50,9 @@ export const hotelFacilities: HotelFacility[] = [
     sort_order: 6
   },
   {
-    id: 'fac-laundry',
-    name: 'Laundry & Dry Cleaning Services',
-    description: 'Professional laundry, dry cleaning, and garment pressing services available upon guest request.',
+    id: 'fac-housekeeping',
+    name: 'Housekeeping and Cleaning',
+    description: 'Dedicated daily housekeeping, professional sanitization, and attentive room cleaning for a comfortable stay.',
     icon: 'Sparkles',
     is_active: true,
     sort_order: 7

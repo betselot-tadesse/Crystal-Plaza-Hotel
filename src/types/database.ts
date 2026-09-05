@@ -63,6 +63,7 @@ export interface EventVenue {
     classroom?: number;
     u_shape?: number;
     reception?: number;
+    people?: string;
   };
   facilities: string[];
   package_details?: string[];

@@ -20,19 +20,27 @@ export const HOTEL_CONFIG = {
   FULL_ADDRESS: 'Al Qasimia, Sharjah, United Arab Emirates',
 
   // Centralized Contact Configuration (Configurable hotel contact points)
-  PHONE_NUMBER: '+971 6 572 2255',
-  PHONE_TEL: 'tel:+97165722255',
+  // Rooms & General Hotel Inquiry
+  PHONE_NUMBER: '055 283 3583',
+  PHONE_TEL: 'tel:0552833583',
+  WHATSAPP_NUMBER: '971552833583', // International format for wa.me API
+  WHATSAPP_DISPLAY: '055 283 3583',
 
-  // Room Service Hotline (Dedicated for food & dining orders)
+  // Banquet Hall & Dining Inquiry
+  EVENTS_DINING_PHONE: '056 973 2183',
+  EVENTS_DINING_TEL: 'tel:0569732183',
+  EVENTS_DINING_WHATSAPP: '971569732183',
+  EVENTS_DINING_DISPLAY: '056 973 2183',
+
+  // Room Service Hotline (alias for dining)
   ROOM_SERVICE_PHONE: '056 973 2183',
   ROOM_SERVICE_RAW: '0569732183',
   ROOM_SERVICE_TEL: 'tel:0569732183',
   ROOM_SERVICE_WHATSAPP: '971569732183',
   ROOM_SERVICE_DISPLAY: '056 973 2183',
-  
-  // WhatsApp Configuration (Configurable centralized number)
-  WHATSAPP_NUMBER: '971501234567', // International format without '+' for wa.me API
-  WHATSAPP_DISPLAY: '+971 50 123 4567',
+
+  // Hotel Logo Avatar
+  LOGO_URL: 'https://i.ibb.co/W4VpJdWZ/Whats-App-Image-2026-08-08-at-5-34-39-PM.jpg',
 
   // Email
   EMAIL: 'info@crystalplazahotel.com',
@@ -98,13 +106,13 @@ export function getWhatsAppUrl(context: 'general' | 'room' | 'event' | 'dining' 
     case 'event':
       message = detail
         ? `Hello Crystal Plaza Hotel, I would like to enquire about hosting an event (${detail}).`
-        : 'Hello Crystal Plaza Hotel, I would like to enquire about hosting an event.';
-      break;
+        : 'Hello Crystal Plaza Hotel, I would like to enquire about hosting an event in the Banquet Hall.';
+      return `https://wa.me/${HOTEL_CONFIG.EVENTS_DINING_WHATSAPP}?text=${encodeURIComponent(message)}`;
     case 'dining':
       message = detail
         ? `Hello Crystal Plaza Hotel, I would like to order room service / enquire about dining (${detail}).`
-        : 'Hello Crystal Plaza Hotel, I would like to order room service / enquire about food and dining.';
-      return `https://wa.me/${HOTEL_CONFIG.ROOM_SERVICE_WHATSAPP}?text=${encodeURIComponent(message)}`;
+        : 'Hello Crystal Plaza Hotel, I would like to enquire about dining and restaurant services.';
+      return `https://wa.me/${HOTEL_CONFIG.EVENTS_DINING_WHATSAPP}?text=${encodeURIComponent(message)}`;
     case 'general':
     default:
       message = 'Hello Crystal Plaza Hotel, I would like to make an enquiry.';
