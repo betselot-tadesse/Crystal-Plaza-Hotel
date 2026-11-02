@@ -49,7 +49,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigate }) => {
       <div className="bg-slate-950 text-white py-16 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-25">
           <img
-            src="https://i.ibb.co/6JvRNWrw/Whats-App-Image-2026-08-25-at-1-58-17-PM.jpg"
+            src="/images/hotel/Whats_App_Image_2026_08_25_at_1_58_17_PM.jpg"
             alt="Crystal Plaza Hotel Banquet & Events Hall"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"

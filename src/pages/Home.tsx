@@ -29,6 +29,8 @@ import {
 } from 'lucide-react';
 import { analytics } from '../utils/analytics';
 
+import { getSafeImageUrl } from '../services/imageService';
+
 interface HomePageProps {
   onNavigate: (page: string, detail?: string) => void;
   onOpenBooking: (roomType?: string) => void;
@@ -42,6 +44,18 @@ export const HomePage: React.FC<HomePageProps> = ({
 }) => {
   const { isLoading: isLoadingPrices, getRoomPrice } = useAgodaPrices();
   const [galleryCategory, setGalleryCategory] = React.useState<string>('all');
+  const [heroImage, setHeroImage] = React.useState(() => 
+    getSafeImageUrl('/images/hotel/Whats_App_Image_2026_09_04_at_4_18_08_PM.jpg', 'home_hero')
+  );
+
+  // Listen for live image updates from Admin Image Manager
+  React.useEffect(() => {
+    const handleUpdate = () => {
+      setHeroImage(getSafeImageUrl('/images/hotel/Whats_App_Image_2026_09_04_at_4_18_08_PM.jpg', 'home_hero'));
+    };
+    window.addEventListener('crystal-images-updated', handleUpdate);
+    return () => window.removeEventListener('crystal-images-updated', handleUpdate);
+  }, []);
 
   const filteredGallery = galleryCategory === 'all'
     ? galleryData
@@ -67,9 +81,9 @@ export const HomePage: React.FC<HomePageProps> = ({
       <section className="relative h-[65vh] sm:h-[75vh] md:h-[82vh] flex items-end justify-center bg-[#0A192F] px-4 sm:px-6">
         {/* Hero Background Image */}
         <div 
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat transition-all duration-700"
           style={{
-            backgroundImage: 'url("https://i.ibb.co/ksP8W5H1/Whats-App-Image-2026-09-04-at-4-18-08-PM-1.jpg")'
+            backgroundImage: `url("${heroImage}")`
           }}
         ></div>
 
@@ -146,7 +160,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="lg:col-span-6 grid grid-cols-2 gap-5 items-stretch">
               <div className="rounded-lg overflow-hidden shadow-lg aspect-[4/5] bg-[#0A192F] border border-[#C5A059]/25">
                 <img
-                  src="https://i.ibb.co/b542Q4xz/Chat-GPT-Image-Sep-5-2026-10-38-32-AM.png"
+                  src={getSafeImageUrl('/images/hotel/Chat_GPT_Image_Sep_5_2026_10_38_32_AM_pn.png', 'home_intro_1')}
                   alt="Crystal Plaza Hotel King Bed guest room"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   loading="lazy"
@@ -155,7 +169,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
               <div className="rounded-lg overflow-hidden shadow-lg aspect-[4/5] bg-[#0A192F] border border-[#C5A059]/25">
                 <img
-                  src="https://i.ibb.co/fz8CHH3x/Whats-App-Image-2026-09-04-at-5-06-41-PM.jpg"
+                  src={getSafeImageUrl('/images/hotel/Whats_App_Image_2026_09_04_at_5_04_54_PM.jpg', 'home_intro_2')}
                   alt="Crystal Plaza Hotel dining atmosphere"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   loading="lazy"

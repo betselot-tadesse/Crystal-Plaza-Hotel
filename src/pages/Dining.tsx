@@ -29,7 +29,7 @@ export const DiningPage: React.FC<DiningPageProps> = ({ onNavigate, onOpenDining
       <div className="bg-slate-950 text-white py-16 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-30">
           <img
-            src="https://i.ibb.co/fz8CHH3x/Whats-App-Image-2026-09-04-at-5-06-41-PM.jpg"
+            src="/images/hotel/Whats_App_Image_2026_09_04_at_5_04_54_PM.jpg"
             alt="Crystal Plaza Hotel Dining Restaurant"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"

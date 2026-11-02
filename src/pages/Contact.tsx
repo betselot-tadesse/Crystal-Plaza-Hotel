@@ -99,7 +99,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
       <div className="bg-slate-950 text-white py-16 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-25">
           <img
-            src="https://i.ibb.co/jPTbsb33/Whats-App-Image-2026-09-04-at-5-14-38-PM.jpg"
+            src="/images/hotel/Whats_App_Image_2026_09_04_at_5_21_07_PM.jpg"
             alt="Crystal Plaza Hotel Front Desk Reception"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"

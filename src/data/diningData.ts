@@ -101,15 +101,18 @@ export const sampleMenuCategories = [
   }
 ];
 
+import { getSafeImageUrl } from '../services/imageService';
+
 export const diningGalleryImages = [
   {
-    url: 'https://i.ibb.co/fz8CHH3x/Whats-App-Image-2026-09-04-at-5-06-41-PM.jpg',
+    url: getSafeImageUrl('/images/hotel/Whats_App_Image_2026_09_04_at_5_04_54_PM.jpg', 'dining_hero'),
     title: 'Crystal Dining Restaurant',
     alt: 'Crystal Plaza Hotel dining hall and seating'
   },
   {
-    url: 'https://i.ibb.co/HLhqtyxG/Whats-App-Image-2026-09-04-at-5-04-54-PM.jpg',
+    url: '/images/hotel/Whats_App_Image_2026_09_04_at_5_04_54_PM.jpg',
     title: 'Restaurant Dining Space',
     alt: 'Crystal Plaza Hotel restaurant tables and warm ambiance'
   }
 ];
+

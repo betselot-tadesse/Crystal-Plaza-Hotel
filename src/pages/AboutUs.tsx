@@ -48,7 +48,7 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onNavigate, onOpenBook
       <div className="bg-slate-950 text-white py-16 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-25">
           <img
-            src="https://i.ibb.co/jPTbsb33/Whats-App-Image-2026-09-04-at-5-14-38-PM.jpg"
+            src="/images/hotel/Whats_App_Image_2026_09_04_at_5_21_07_PM.jpg"
             alt="Crystal Plaza Hotel Entrance and Lobby"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
@@ -103,7 +103,7 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onNavigate, onOpenBook
           <div className="lg:col-span-5 grid grid-cols-1 gap-4">
             <div className="rounded-2xl overflow-hidden shadow-lg aspect-[4/3] bg-slate-900">
               <img
-                src="https://i.ibb.co/N21YsLpF/Whats-App-Image-2026-09-04-at-5-21-07-PM.jpg"
+                src="/images/hotel/Whats_App_Image_2026_09_04_at_5_21_07_PM.jpg"
                 alt="Hotel Reception and Lobby Foyer"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
@@ -111,7 +111,7 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onNavigate, onOpenBook
             </div>
             <div className="rounded-2xl overflow-hidden shadow-lg aspect-[4/3] bg-slate-900">
               <img
-                src="https://i.ibb.co/pB6BWFgN/Chat-GPT-Image-Sep-5-2026-10-48-05-AM.png"
+                src="/images/hotel/Chat_GPT_Image_Sep_5_2026_10_46_59_AM_pn.png"
                 alt="Crystal Plaza Hotel Suite Room"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"

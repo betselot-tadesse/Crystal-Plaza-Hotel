@@ -34,10 +34,14 @@ import {
   Calendar, 
   Globe, 
   Eye, 
+  EyeOff,
+  User,
   Check, 
   X,
-  Send
+  Send,
+  Image as ImageIcon
 } from 'lucide-react';
+import { MediaManager } from '../components/admin/MediaManager';
 
 interface AdminDashboardProps {
   onNavigate: (page: string, detail?: string) => void;
@@ -48,13 +52,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return localStorage.getItem('crystal_admin_auth') === 'true';
   });
-  const [pinInput, setPinInput] = useState('');
-  const [pinError, setPinError] = useState('');
+  const [usernameInput, setUsernameInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   // Main state
   const [inquiries, setInquiries] = useState<InquiryRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'leads' | 'settings' | 'test'>('leads');
+  const [activeTab, setActiveTab] = useState<'leads' | 'media' | 'settings' | 'test'>('leads');
 
   // Filters & Search
   const [departmentFilter, setDepartmentFilter] = useState<'All' | TargetDepartment>('All');
@@ -137,21 +143,38 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
     return { total, reception, roomService, banquet, newLeads, contacted };
   }, [inquiries]);
 
-  // Handle PIN authentication (Default hotel staff PIN: 2026 or crystal2026)
-  const handlePinSubmit = (e: React.FormEvent) => {
+  // Handle Admin authentication
+  const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput.trim() === '2026' || pinInput.trim().toLowerCase() === 'crystal' || pinInput.trim().toLowerCase() === 'crystal2026') {
+    const enteredUser = usernameInput.trim().toLowerCase();
+    const enteredPass = passwordInput.trim();
+
+    // Supports cph1 (digit 1) or cphl (letter l) and both 10611313 (8 digits) or 106113 (6 digits)
+    const isValidUsername = enteredUser === 'cph1' || enteredUser === 'cphl';
+    const isValidPassword = enteredPass === '10611313' || enteredPass === '106113';
+
+    if (isValidUsername && isValidPassword) {
       setIsAuthenticated(true);
       localStorage.setItem('crystal_admin_auth', 'true');
-      setPinError('');
+      setLoginError('');
+      setPasswordInput('');
     } else {
-      setPinError('Invalid Admin PIN. (Hint: Use default hotel staff PIN: 2026)');
+      if (!isValidUsername && !isValidPassword) {
+        setLoginError('Invalid username and password. Use Username: cph1 and Password: 10611313');
+      } else if (!isValidUsername) {
+        setLoginError('Invalid username. Use "cph1"');
+      } else {
+        setLoginError('Invalid password. Note: Password is 10611313 (or 106113)');
+      }
     }
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('crystal_admin_auth');
+    setUsernameInput('');
+    setPasswordInput('');
+    setLoginError('');
   };
 
   // Status changer
@@ -284,26 +307,60 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
             </p>
           </div>
 
-          <form onSubmit={handlePinSubmit} className="space-y-4">
+          <form onSubmit={handleLoginSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
-                Enter Staff PIN / Password
+                Username
               </label>
-              <input
-                type="password"
-                placeholder="Enter PIN (e.g. 2026)"
-                value={pinInput}
-                onChange={(e) => setPinInput(e.target.value)}
-                autoFocus
-                required
-                className="w-full text-center tracking-widest text-lg p-3 rounded-lg border border-slate-700 bg-slate-900/90 text-white focus:outline-none focus:ring-2 focus:ring-[#C5A059]"
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#C5A059]">
+                  <User className="w-4 h-4" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Enter username"
+                  value={usernameInput}
+                  onChange={(e) => setUsernameInput(e.target.value)}
+                  autoFocus
+                  required
+                  autoComplete="username"
+                  className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-700 bg-slate-900/90 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5A059]"
+                />
+              </div>
             </div>
 
-            {pinError && (
-              <div className="p-3 bg-red-950/50 border border-red-800/80 rounded-lg text-red-300 text-xs flex items-center gap-2">
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#C5A059]">
+                  <Lock className="w-4 h-4" />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter password"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-slate-700 bg-slate-900/90 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5A059]"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {loginError && (
+              <div className="p-3 bg-red-950/60 border border-red-800/80 rounded-lg text-red-300 text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                <span>{pinError}</span>
+                <span>{loginError}</span>
               </div>
             )}
 
@@ -313,6 +370,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
             >
               Sign In to Admin Console
             </button>
+
+            <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400">
+              <span>Staff Login: <strong className="text-slate-200">cph1</strong></span>
+              <button
+                type="button"
+                onClick={() => {
+                  setUsernameInput('cph1');
+                  setPasswordInput('10611313');
+                  setLoginError('');
+                }}
+                className="text-[#C5A059] hover:text-[#d6b46f] underline font-medium cursor-pointer"
+              >
+                Autofill Credentials
+              </button>
+            </div>
 
             <div className="pt-3 text-center border-t border-slate-800">
               <button
@@ -447,6 +519,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
               <span className="px-1.5 py-0.2 rounded-full bg-slate-900/40 text-[10px] ml-1">
                 {filteredInquiries.length}
               </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('media')}
+              className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-2 ${
+                activeTab === 'media'
+                  ? 'bg-[#C5A059] text-slate-950 shadow'
+                  : 'bg-slate-800 text-slate-300 hover:text-white'
+              }`}
+            >
+              <ImageIcon className="w-4 h-4" />
+              <span>Images & Media Storage</span>
             </button>
 
             <button
@@ -741,6 +825,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
               </div>
             )}
           </div>
+        )}
+
+        {/* TAB: Direct Images & Media Storage */}
+        {activeTab === 'media' && (
+          <MediaManager />
         )}
 
         {/* TAB 2: Website & Department Settings */}

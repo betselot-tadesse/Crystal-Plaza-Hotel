@@ -1,10 +1,9 @@
 import { Room } from '../types/database';
+import { getSafeImageUrl } from '../services/imageService';
 
 /**
  * Crystal Plaza Hotel - Rooms & Accommodation Data Layer
- * 
- * Note: Pricing is kept configurable. If actual dynamic prices are not provided,
- * the UI displays "Contact us for current rates" to adhere to the strict no-fake-pricing mandate.
+ * Self-hosted local assets to prevent broken links from external image services like imgbb.
  */
 export const roomsData: Room[] = [
   {
@@ -13,11 +12,9 @@ export const roomsData: Room[] = [
     slug: 'standard-king-room',
     description: 'A well-designed room featuring a comfortable king-size bed, workstation, en-suite bathroom, and contemporary amenities tailored for solo business travellers and couples.',
     images: [
-      'https://i.ibb.co/b542Q4xz/Chat-GPT-Image-Sep-5-2026-10-38-32-AM.png',
-      'https://i.ibb.co/PZLChhFp/Chat-GPT-Image-Sep-5-2026-10-34-26-AM.png',
-      'https://i.ibb.co/KcmqW3RL/Chat-GPT-Image-Sep-5-2026-10-42-15-AM.png',
-      'https://ak-d.tripcdn.com/images/0220112000k69or5o7A72_W_1280_853_R5.webp',
-      'https://ak-d.tripcdn.com/images/0224512000l1c4xc78C50_W_1280_853_R5.webp'
+      getSafeImageUrl('/images/hotel/Chat_GPT_Image_Sep_5_2026_10_38_32_AM_pn.png', 'room_king'),
+      '/images/hotel/0220112000k69or5o7A72_W_1280_853_R5_webp.webp',
+      '/images/hotel/0224512000l1c4xc78C50_W_1280_853_R5_webp.webp'
     ],
     currency: 'AED',
     capacity: 2,
@@ -43,11 +40,9 @@ export const roomsData: Room[] = [
     slug: 'standard-twin-room',
     description: 'Designed for colleagues, friends, or family members seeking practical comfort in Sharjah with two twin beds, ample natural light, and modern in-room conveniences.',
     images: [
-      'https://i.ibb.co/G4tFqPs0/Chat-GPT-Image-Sep-5-2026-10-19-21-AM.png',
-      'https://i.ibb.co/7x7YnNbc/Chat-GPT-Image-Sep-5-2026-10-16-30-AM.png',
-      'https://i.ibb.co/FkkktTRy/Chat-GPT-Image-Sep-5-2026-10-20-39-AM.png',
-      'https://ak-d.tripcdn.com/images/0220112000k69or5o7A72_W_1280_853_R5.webp',
-      'https://ak-d.tripcdn.com/images/0224512000l1c4xc78C50_W_1280_853_R5.webp'
+      getSafeImageUrl('/images/hotel/Chat_GPT_Image_Sep_5_2026_10_38_32_AM_pn.png', 'room_twin'),
+      '/images/hotel/0220112000k69or5o7A72_W_1280_853_R5_webp.webp',
+      '/images/hotel/0224512000l1c4xc78C50_W_1280_853_R5_webp.webp'
     ],
     currency: 'AED',
     capacity: 2,
@@ -73,11 +68,9 @@ export const roomsData: Room[] = [
     slug: 'standard-triple-room',
     description: 'Generously proportioned accommodation accommodating three guests comfortably with flexible bedding configurations, dedicated workspace, and upgraded amenities.',
     images: [
-      'https://i.ibb.co/tThnhpYW/Chat-GPT-Image-Sep-5-2026-10-26-13-AM.png',
-      'https://i.ibb.co/9mVPK2k5/Chat-GPT-Image-Sep-5-2026-10-27-12-AM.png',
-      'https://i.ibb.co/RGTd5p8p/Chat-GPT-Image-Sep-5-2026-10-29-17-AM.png',
-      'https://ak-d.tripcdn.com/images/0220112000k69or5o7A72_W_1280_853_R5.webp',
-      'https://ak-d.tripcdn.com/images/0224512000l1c4xc78C50_W_1280_853_R5.webp'
+      getSafeImageUrl('/images/hotel/Chat_GPT_Image_Sep_5_2026_10_26_13_AM_pn.png', 'room_triple'),
+      '/images/hotel/0220112000k69or5o7A72_W_1280_853_R5_webp.webp',
+      '/images/hotel/0224512000l1c4xc78C50_W_1280_853_R5_webp.webp'
     ],
     currency: 'AED',
     capacity: 3,
@@ -103,11 +96,10 @@ export const roomsData: Room[] = [
     slug: 'executive-suite',
     description: 'A distinguished suite featuring a separate living room with plush sofas, a private master bedroom, and dedicated workspace ideal for corporate executives and extended family visits.',
     images: [
-      'https://i.ibb.co/pB6BWFgN/Chat-GPT-Image-Sep-5-2026-10-48-05-AM.png',
-      'https://i.ibb.co/fV6NK0SJ/Chat-GPT-Image-Sep-5-2026-10-46-59-AM.png',
-      'https://i.ibb.co/Q5rrL05/Chat-GPT-Image-Sep-5-2026-10-51-06-AM.png',
-      'https://i.ibb.co/BWB3jhs/Chat-GPT-Image-Sep-5-2026-10-50-10-AM.png',
-      'https://ak-d.tripcdn.com/images/0224512000l1c4xc78C50_W_1280_853_R5.webp'
+      getSafeImageUrl('/images/hotel/Chat_GPT_Image_Sep_5_2026_10_46_59_AM_pn.png', 'room_suite'),
+      '/images/hotel/Chat_GPT_Image_Sep_5_2026_10_50_10_AM_pn.png',
+      '/images/hotel/Chat_GPT_Image_Sep_5_2026_10_51_06_AM_pn.png',
+      '/images/hotel/0224512000l1c4xc78C50_W_1280_853_R5_webp.webp'
     ],
     currency: 'AED',
     capacity: 4,

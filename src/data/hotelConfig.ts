@@ -39,8 +39,9 @@ export const HOTEL_CONFIG = {
   ROOM_SERVICE_WHATSAPP: '971569732183',
   ROOM_SERVICE_DISPLAY: '056 973 2183',
 
-  // Hotel Logo Avatar
-  LOGO_URL: 'https://i.ibb.co/W4VpJdWZ/Whats-App-Image-2026-08-08-at-5-34-39-PM.jpg',
+  // Hotel Logo Avatar (Self-hosted on website server)
+  LOGO_URL: '/images/hotel/Whats_App_Image_2026_08_08_at_5_34_39_PM.jpg',
+  POOL_POLICY: 'Crystal Plaza Hotel features an equipped Fitness Centre, 24-Hour Front Desk, Restaurant & Café, and Banquet Halls. Please note there is no rooftop swimming pool on the premises.',
 
   // Email
   EMAIL: 'info@crystalplazahotel.com',

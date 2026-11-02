@@ -57,7 +57,7 @@ export const RoomsPage: React.FC<RoomsPageProps> = ({ onNavigate, onOpenBooking 
       <div className="bg-slate-950 text-white py-14 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-25">
           <img
-            src="https://i.ibb.co/b542Q4xz/Chat-GPT-Image-Sep-5-2026-10-38-32-AM.png"
+            src="/images/hotel/Chat_GPT_Image_Sep_5_2026_10_38_32_AM_pn.png"
             alt="Crystal Plaza Hotel Rooms"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"

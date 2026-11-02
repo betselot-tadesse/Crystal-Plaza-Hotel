@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { HOTEL_CONFIG } from '../../data/hotelConfig';
+import { getSafeImageUrl } from '../../services/imageService';
 import { Menu, X, ShieldCheck } from 'lucide-react';
 
 interface HeaderProps {
@@ -19,6 +20,15 @@ export const Header: React.FC<HeaderProps> = ({
   const current = currentPage || activePage || 'home';
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [logoUrl, setLogoUrl] = useState(() => getSafeImageUrl(HOTEL_CONFIG.LOGO_URL, 'logo'));
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setLogoUrl(getSafeImageUrl(HOTEL_CONFIG.LOGO_URL, 'logo'));
+    };
+    window.addEventListener('crystal-images-updated', handleUpdate);
+    return () => window.removeEventListener('crystal-images-updated', handleUpdate);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,7 +78,7 @@ export const Header: React.FC<HeaderProps> = ({
           aria-label="Crystal Plaza Hotel - Home"
         >
           <img
-            src={HOTEL_CONFIG.LOGO_URL}
+            src={logoUrl}
             alt="Crystal Plaza Hotel Logo"
             className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border-2 border-[#C5A059] shadow-md flex-shrink-0 group-hover:scale-105 transition-transform"
             referrerPolicy="no-referrer"

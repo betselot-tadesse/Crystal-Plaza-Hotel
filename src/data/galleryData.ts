@@ -1,9 +1,10 @@
 import { GalleryItem } from '../types/database';
+import { getSafeImageUrl } from '../services/imageService';
 
 export const galleryData: GalleryItem[] = [
   {
     id: 'gal-lobby-1',
-    image: 'https://i.ibb.co/jPTbsb33/Whats-App-Image-2026-09-04-at-5-14-38-PM.jpg',
+    image: getSafeImageUrl('/images/hotel/Whats_App_Image_2026_09_04_at_5_21_07_PM.jpg', 'lobby_foyer'),
     category: 'hotel',
     title: 'Hotel Lobby & Front Desk Reception',
     alt_text: 'Crystal Plaza Hotel elegant welcoming lobby and 24/7 reception desk',
@@ -12,7 +13,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-lobby-2',
-    image: 'https://i.ibb.co/N21YsLpF/Whats-App-Image-2026-09-04-at-5-21-07-PM.jpg',
+    image: '/images/hotel/Whats_App_Image_2026_09_04_at_5_21_07_PM.jpg',
     category: 'hotel',
     title: 'Crystal Plaza Hotel Main Foyer',
     alt_text: 'Crystal Plaza Hotel spacious ground floor entrance and foyer',
@@ -21,7 +22,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-king',
-    image: 'https://i.ibb.co/b542Q4xz/Chat-GPT-Image-Sep-5-2026-10-38-32-AM.png',
+    image: getSafeImageUrl('/images/hotel/Chat_GPT_Image_Sep_5_2026_10_38_32_AM_pn.png', 'room_king'),
     category: 'rooms',
     title: 'Standard King Size Room',
     alt_text: 'Crystal Plaza Hotel Standard King guest room with large king bed',
@@ -30,7 +31,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-twin',
-    image: 'https://i.ibb.co/G4tFqPs0/Chat-GPT-Image-Sep-5-2026-10-19-21-AM.png',
+    image: getSafeImageUrl('/images/hotel/Chat_GPT_Image_Sep_5_2026_10_38_32_AM_pn.png', 'room_twin'),
     category: 'rooms',
     title: 'Standard Twin Room',
     alt_text: 'Crystal Plaza Hotel Twin guest room with two single beds',
@@ -39,7 +40,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-triple',
-    image: 'https://i.ibb.co/tThnhpYW/Chat-GPT-Image-Sep-5-2026-10-26-13-AM.png',
+    image: getSafeImageUrl('/images/hotel/Chat_GPT_Image_Sep_5_2026_10_26_13_AM_pn.png', 'room_triple'),
     category: 'rooms',
     title: 'Standard Triple Room',
     alt_text: 'Standard Triple guest room with comfortable bedding arrangement',
@@ -48,7 +49,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-suite',
-    image: 'https://i.ibb.co/pB6BWFgN/Chat-GPT-Image-Sep-5-2026-10-48-05-AM.png',
+    image: getSafeImageUrl('/images/hotel/Chat_GPT_Image_Sep_5_2026_10_46_59_AM_pn.png', 'room_suite'),
     category: 'rooms',
     title: 'Executive Suite',
     alt_text: 'Spacious Executive Suite bedroom and relaxation area',
@@ -57,7 +58,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-bath',
-    image: 'https://ak-d.tripcdn.com/images/0224512000l1c4xc78C50_W_1280_853_R5.webp',
+    image: '/images/hotel/0224512000l1c4xc78C50_W_1280_853_R5_webp.webp',
     category: 'rooms',
     title: 'En-Suite Guest Bathroom',
     alt_text: 'Clean, modern guest bathroom with en-suite shower and amenities',
@@ -66,7 +67,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-banquet-1',
-    image: 'https://i.ibb.co/6JvRNWrw/Whats-App-Image-2026-08-25-at-1-58-17-PM.jpg',
+    image: getSafeImageUrl('/images/hotel/Whats_App_Image_2026_08_25_at_1_58_17_PM.jpg', 'banquet_hero'),
     category: 'events',
     title: 'Crystal Banquet Hall & Reception',
     alt_text: 'Crystal Plaza Hotel elegant banquet hall and dining venue setup',
@@ -75,7 +76,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-banquet-2',
-    image: 'https://i.ibb.co/xSLWpww1/Whats-App-Image-2026-08-25-at-1-58-12-PM.jpg',
+    image: getSafeImageUrl('/images/hotel/Whats_App_Image_2026_08_25_at_1_58_19_PM.jpg', 'banquet_stage'),
     category: 'events',
     title: 'Banquet Hall Stage & Event Layout',
     alt_text: 'Elevated presentation stage and formal seating in banquet hall',
@@ -84,7 +85,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-banquet-3',
-    image: 'https://i.ibb.co/4Rcjw4Hk/Whats-App-Image-2026-08-25-at-1-58-22-PM.jpg',
+    image: '/images/hotel/Whats_App_Image_2026_08_25_at_1_58_22_PM.jpg',
     category: 'events',
     title: 'Banquet Celebration Setting',
     alt_text: 'Atmospheric banquet hall setting with warm illumination',
@@ -93,7 +94,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-banquet-4',
-    image: 'https://i.ibb.co/994kcxnM/Whats-App-Image-2026-08-25-at-1-58-19-PM.jpg',
+    image: '/images/hotel/Whats_App_Image_2026_08_25_at_1_58_19_PM.jpg',
     category: 'events',
     title: 'Banquet Hall Seating Arrangement',
     alt_text: 'Wide dining and guest seating setup with chandeliers and carpet',
@@ -102,7 +103,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-banquet-5',
-    image: 'https://i.ibb.co/ZRyNTJj4/Whats-App-Image-2026-08-08-at-4-47-57-PM.jpg',
+    image: '/images/hotel/Whats_App_Image_2026_08_25_at_1_58_17_PM.jpg',
     category: 'events',
     title: 'Banquet Hall Interior View',
     alt_text: 'Full panoramic perspective of the banquet hall ready for events',
@@ -111,7 +112,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-meeting',
-    image: 'https://i.ibb.co/Wv8YjnbL/MEETING-ROOM.jpg',
+    image: '/images/hotel/Whats_App_Image_2026_08_25_at_1_58_22_PM.jpg',
     category: 'events',
     title: 'Meeting Room & Boardroom',
     alt_text: 'Dedicated meeting room and boardroom setup with presentation screen',
@@ -120,7 +121,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-dining-1',
-    image: 'https://i.ibb.co/fz8CHH3x/Whats-App-Image-2026-09-04-at-5-06-41-PM.jpg',
+    image: getSafeImageUrl('/images/hotel/Whats_App_Image_2026_09_04_at_5_04_54_PM.jpg', 'dining_hero'),
     category: 'dining',
     title: 'Crystal Dining Restaurant',
     alt_text: 'Crystal Plaza Hotel dining hall and seating',
@@ -129,7 +130,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-dining-2',
-    image: 'https://i.ibb.co/HLhqtyxG/Whats-App-Image-2026-09-04-at-5-04-54-PM.jpg',
+    image: '/images/hotel/Whats_App_Image_2026_09_04_at_5_04_54_PM.jpg',
     category: 'dining',
     title: 'Restaurant Dining Space',
     alt_text: 'Crystal Plaza Hotel restaurant tables and warm ambiance',
@@ -138,7 +139,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-gym-1',
-    image: 'https://i.ibb.co/F4TSrnL9/GYM.jpg',
+    image: getSafeImageUrl('/images/hotel/gym2_jpg.jpg', 'gym_fitness'),
     category: 'facilities',
     title: 'Fitness Gym & Exercise Center',
     alt_text: 'Equipped hotel fitness room with workout machines and equipment',
@@ -147,7 +148,7 @@ export const galleryData: GalleryItem[] = [
   },
   {
     id: 'gal-gym-2',
-    image: 'https://i.ibb.co/NnFtvfDk/gym2.jpg',
+    image: '/images/hotel/gym2_jpg.jpg',
     category: 'facilities',
     title: 'Gym & Cardio Equipment',
     alt_text: 'Cardio workout and exercise machines for hotel guests',
