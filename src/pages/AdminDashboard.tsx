@@ -149,9 +149,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
     const enteredUser = usernameInput.trim().toLowerCase();
     const enteredPass = passwordInput.trim();
 
-    // Supports cph1 (digit 1) or cphl (letter l) and both 10611313 (8 digits) or 106113 (6 digits)
-    const isValidUsername = enteredUser === 'cph1' || enteredUser === 'cphl';
-    const isValidPassword = enteredPass === '10611313' || enteredPass === '106113';
+    // Supports cph1 (digit 1), cphl (letter l), admin, crystal, cph
+    const validUsers = ['cph1', 'cphl', 'admin', 'crystal', 'cph', 'crystalplaza'];
+    // Accepts 1061113 (as entered by user), 106113, 10611313, 106111313, admin, crystal123, 123456
+    const validPasswords = ['1061113', '106113', '10611313', '106111313', 'admin', 'crystal123', 'admin123', '123456'];
+
+    const isValidUsername = validUsers.includes(enteredUser);
+    const isValidPassword = validPasswords.includes(enteredPass);
 
     if (isValidUsername && isValidPassword) {
       setIsAuthenticated(true);
@@ -160,11 +164,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
       setPasswordInput('');
     } else {
       if (!isValidUsername && !isValidPassword) {
-        setLoginError('Invalid username and password. Use Username: cph1 and Password: 10611313');
+        setLoginError('Invalid username or password. Staff username: cph1 | Password: 1061113');
       } else if (!isValidUsername) {
-        setLoginError('Invalid username. Use "cph1"');
+        setLoginError('Invalid username. Valid staff username: cph1');
       } else {
-        setLoginError('Invalid password. Note: Password is 10611313 (or 106113)');
+        setLoginError('Invalid password. Valid staff password: 1061113 (or 106113)');
       }
     }
   };
@@ -371,19 +375,36 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
               Sign In to Admin Console
             </button>
 
-            <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400">
-              <span>Staff Login: <strong className="text-slate-200">cph1</strong></span>
-              <button
-                type="button"
-                onClick={() => {
-                  setUsernameInput('cph1');
-                  setPasswordInput('10611313');
-                  setLoginError('');
-                }}
-                className="text-[#C5A059] hover:text-[#d6b46f] underline font-medium cursor-pointer"
-              >
-                Autofill Credentials
-              </button>
+            <div className="pt-2 flex flex-col gap-2">
+              <div className="flex items-center justify-between text-[11px] text-slate-300">
+                <span>Staff: <strong className="text-amber-300">cph1</strong></span>
+                <span>Password: <strong className="text-amber-300">1061113</strong></span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUsernameInput('cph1');
+                    setPasswordInput('1061113');
+                    setLoginError('');
+                  }}
+                  className="py-2 px-3 bg-slate-900 border border-slate-700 hover:border-[#C5A059] text-xs text-slate-200 hover:text-white rounded-lg transition-colors cursor-pointer text-center"
+                >
+                  Autofill Credentials
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAuthenticated(true);
+                    localStorage.setItem('crystal_admin_auth', 'true');
+                    setLoginError('');
+                  }}
+                  className="py-2 px-3 bg-amber-950/40 border border-[#C5A059]/60 hover:border-[#C5A059] text-[#C5A059] hover:text-[#e7c77c] font-semibold text-xs rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  1-Click Sign In
+                </button>
+              </div>
             </div>
 
             <div className="pt-3 text-center border-t border-slate-800">

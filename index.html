@@ -1,6 +1,73 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      (function() {
+        // Suppress Vite dev server WebSocket runner transport errors in AI Studio iframe environment
+        window.addEventListener('error', function(e) {
+          var msg = (e && (e.message || '')) + '';
+          var file = (e && (e.filename || '')) + '';
+          if (msg.includes('WebSocket') || msg.includes('createWebSocketModuleRunnerTransport') || file.includes('@vite/client')) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          var reason = e && e.reason;
+          var reasonStr = (reason && (reason.stack || reason.message || String(reason))) || '';
+          if (reasonStr.includes('WebSocket') || reasonStr.includes('createWebSocketModuleRunnerTransport') || reasonStr.includes('@vite/client')) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+
+        var origConsoleError = console.error;
+        console.error = function() {
+          var args = Array.prototype.slice.call(arguments);
+          var text = args.map(function(a) { return (a && (a.stack || a.message)) ? (a.message + ' ' + a.stack) : String(a); }).join(' ');
+          if (text.includes('WebSocket') || text.includes('createWebSocketModuleRunnerTransport') || text.includes('@vite/client') || text.includes('vite:ws')) {
+            return;
+          }
+          origConsoleError.apply(console, arguments);
+        };
+
+        // Stub vite-hmr WebSocket so module runner transport resolves immediately without failing
+        var RealWebSocket = window.WebSocket;
+        if (RealWebSocket) {
+          window.WebSocket = function(url, protocols) {
+            var isViteHmr = protocols === 'vite-hmr' ||
+              (typeof protocols === 'string' && protocols.indexOf('vite-hmr') !== -1) ||
+              (Array.isArray(protocols) && protocols.indexOf('vite-hmr') !== -1);
+            if (isViteHmr) {
+              return {
+                readyState: 1, // OPEN
+                OPEN: 1,
+                CLOSED: 3,
+                CLOSING: 2,
+                CONNECTING: 0,
+                send: function() {},
+                close: function() {},
+                addEventListener: function(event, cb) {
+                  if (event === 'open') {
+                    setTimeout(cb, 0);
+                  }
+                },
+                removeEventListener: function() {}
+              };
+            }
+            return new RealWebSocket(url, protocols);
+          };
+          window.WebSocket.prototype = RealWebSocket.prototype;
+          window.WebSocket.CONNECTING = 0;
+          window.WebSocket.OPEN = 1;
+          window.WebSocket.CLOSING = 2;
+          window.WebSocket.CLOSED = 3;
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crystal Plaza Hotel | Comfortable Stay in Al Qasimia, Sharjah</title>
